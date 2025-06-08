@@ -3,7 +3,7 @@
 Repositorio: https://github.com/nrmattar-dev/ETHKipu2025/tree/main/contracts
 Contrato: https://sepolia.etherscan.io/address/0x208166e542b6e7273A90b3C86590AE99dEe655cE
 
-## Funciones
+## Funcionalidades
 
 - **Crear una subasta**: El dueño del contrato configura los parámetros iniciales de la subasta (como el monto mínimo de las ofertas, la duración, etc.).
 - **Hacer una oferta**: Los participantes pueden hacer ofertas mayores que el valor actual de la subasta, y se valida que el monto cumpla con el porcentaje de incremento mínimo (`bidGap`).
@@ -30,7 +30,6 @@ Contrato: https://sepolia.etherscan.io/address/0x208166e542b6e7273A90b3C86590AE9
 ## Estructuras de Datos
 
 ### `Bid`
-```solidity
 struct Bid { 
     address bidder; // Address del postor
     uint256 amount; // Monto de la oferta
@@ -39,7 +38,7 @@ struct Bid {
 
 ## Funciones:
 
-- MakeABid: Sirve para hacer una puja:
+- `MakeABid`: Sirve para hacer una puja:
 El modifier isActive() valida que esté activa (que el owner no la haya terminado y repartido el dinero). El modifier isNotEnded() valida que se haga dentro del tiempo de la subasta.
 Usé esos dos modifiers porque ambos contienen lógicas que se usan más de una vez.
 
@@ -79,7 +78,7 @@ function MakeABid () payable isActive() isNotEnded() external {
     }  
 
 
-- EndAuction: Sirve para finalizar la subasta. El modifier isActive verifica que la subasta no haya sido terminada por el owner. isEnded() que esté fuera de la duración de la subasta y onlyOwner() que sólo el owner pueda finalizarla.
+- `EndAuction`: Sirve para finalizar la subasta. El modifier isActive verifica que la subasta no haya sido terminada por el owner. isEnded() que esté fuera de la duración de la subasta y onlyOwner() que sólo el owner pueda finalizarla.
 
 function EndAuction () isActive() isEnded() onlyOwner() external {
 
@@ -122,7 +121,7 @@ function EndAuction () isActive() isEnded() onlyOwner() external {
 	emit AuctionEnded(winnerBid);
 }
 
-- PartialRefund: Hace un reembolso parcial de las apuestas de los ofertantes. Si ofertó 3 veces, se le devuelve el acumulado de las primeras dos ofertas.
+- `PartialRefund`: Hace un reembolso parcial de las apuestas de los ofertantes. Si ofertó 3 veces, se le devuelve el acumulado de las primeras dos ofertas.
 
     function PartialRefund() external isActive() isNotEnded()  {
         uint256 lastAmount = bidAddressLastAmount[msg.sender];
